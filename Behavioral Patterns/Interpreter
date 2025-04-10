@@ -1,0 +1,46 @@
+// Abstract Expression
+interface Expression {
+    int interpret(Context context);
+}
+// Terminal Expressions
+class NumberExpression implements Expression {
+    private int number;
+    public NumberExpression(int number) {
+        this.number = number;
+    }
+    @Override
+    public int interpret(Context context) {
+        return number;
+    }
+}
+class AddExpression implements Expression {
+    private Expression leftExpression;
+    private Expression rightExpression;
+    public AddExpression(Expression leftExpression, Expression rightExpression) {
+        this.leftExpression = leftExpression;
+        this.rightExpression = rightExpression;
+    }
+    @Override
+    public int interpret(Context context) {
+        return leftExpression.interpret(context) + rightExpression.interpret(context);
+    }
+}
+// Context
+class Context {
+    // Additional context information, if needed
+}
+// Client
+public class Application {
+    public static void main(String[] args) {
+        // Create the expression: (2 + 3) + 4
+        Expression expression = new AddExpression(
+                new AddExpression(new NumberExpression(2), new NumberExpression(3)),
+                new NumberExpression(4)
+        );
+        // Create the context, if needed
+        Context context = new Context();
+        // Interpret the expression
+        int result = expression.interpret(context);
+        System.out.println("Result: " + result); // Output: Result: 9
+    }
+}
